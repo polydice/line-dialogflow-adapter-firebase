@@ -13,7 +13,7 @@ import {
   EventMessage,
 } from '@line/bot-sdk';
 
-import { LINE_FOLLOW, LINE_JOIN, LINE_BEACON, POSTBACK_EVENT_NAME_FIELD } from './config';
+import { LINE_FOLLOW, LINE_JOIN, LINE_BEACON, LINE_ACCOUNT_LINK, POSTBACK_EVENT_NAME_FIELD } from './config';
 import { DialogflowClient } from './dialogflow-client';
 import { MessageHandler } from './message-handler';
 
@@ -50,6 +50,9 @@ export class EventHandler {
 
       case 'beacon':
         return this.handleBeacon(event as BeaconEvent);
+
+      case 'accountLink':
+        return this.handleAccountLink(event as BeaconEvent);
 
       default:
         throw new Error(`Unknown event: ${JSON.stringify(event)}`);
@@ -109,6 +112,13 @@ export class EventHandler {
     const replyToken = get(event, 'replyToken');
     const userId = get(event, ['source', 'userId']);
     const lineMessages = await this.dialogflowClient.sendEvent(userId, LINE_BEACON);
+    return this.lineClient.replyMessage(replyToken, lineMessages);
+  }
+
+  private async handleAccountLink(event: BeaconEvent) {
+    const replyToken = get(event, 'replyToken');
+    const userId = get(event, ['source', 'userId']);
+    const lineMessages = await this.dialogflowClient.sendEvent(userId, LINE_ACCOUNT_LINK);
     return this.lineClient.replyMessage(replyToken, lineMessages);
   }
 
