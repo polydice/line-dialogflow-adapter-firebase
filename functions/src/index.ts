@@ -10,7 +10,7 @@ const lineClient = new Client(lineClientConfig);
 const dialogflowClient = new DialogflowClient(dialogflowClientConfig);
 const webhookHandler = new EventHandler(lineClient, dialogflowClient);
 
-export const webhook = functions.https.onRequest(async (req, res) => {
+export const lineDialogflowWebhook = functions.https.onRequest(async (req, res) => {
   const event = get(req, ['body', 'events', '0']);
   await webhookHandler.handleEvent(event);
   res.send('');
