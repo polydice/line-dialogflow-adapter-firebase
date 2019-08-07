@@ -23,5 +23,8 @@
     "tslint-config-airbnb-base": "^0.1.0",
     "typescript": "^2.5.3"
   },
+  "engines": {
+    "node": 10
+  },
   "private": true
 }
