@@ -20,13 +20,12 @@ export class MessageHandler {
    */
   async handleText(event: MessageEvent) {
     const replyToken = get(event, 'replyToken');
-    if (replyToken === LINE_VERIFY_TOKEN) return;
+    if (replyToken === LINE_VERIFY_TOKEN) return undefined;
     const userId = get(event, ['source', 'userId']);
     const message = get(event, 'message');
     const messageText = get(message, 'text');
     const lineMessages = await this.dialogflowClient.sendText(userId, messageText);
-    this.lineClient.replyMessage(replyToken, lineMessages);
-    return;
+    return this.lineClient.replyMessage(replyToken, lineMessages);
   }
 
   async handleImage(event: MessageEvent) {

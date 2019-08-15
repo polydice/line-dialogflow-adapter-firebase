@@ -56,11 +56,11 @@ export class DialogflowClient {
       if (messageType === 'text') {
         message = {
           type: 'text',
-          text: get(dialogflowMessages, ['text', 'text', '0']),
+          text: get(dialogflowMessage, ['text', 'text', '0']),
         };
         lineMessages.push(message);
       } else if (messageType === 'payload') {
-        let payload = get(dialogflowMessages, ['payload']);
+        let payload = get(dialogflowMessage, ['payload']);
         payload = structProtoToJson(payload);
         message = get(payload, 'line');
         lineMessages.push(message);
